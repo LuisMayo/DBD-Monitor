@@ -252,7 +252,7 @@ namespace DBDMN
             setGameType( gameType );
         }
 
-        private static void setGameType( GameType gameType )
+        public static void setGameType( GameType gameType )
         {
             StateManager._gameType = gameType;
         }

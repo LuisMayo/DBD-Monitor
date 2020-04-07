@@ -780,5 +780,22 @@ namespace DBDMN
         {
             Config.setConfigValue( Config.keyGeneralSoundOnNewStats, chkPlaySoundOnStatsSave.Checked );
         }
+
+        private void grpActions_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void swf_Button_Click(object sender, EventArgs e)
+        {
+            StateManager.setGameType(Stats.GameType.SWF);
+            this.timer1_Tick(null, null);
+        }
+
+        private void solo_Button_Click(object sender, EventArgs e)
+        {
+            StateManager.setGameType(Stats.GameType.Solo);
+            this.timer1_Tick(null, null);
+        }
     }
 }
