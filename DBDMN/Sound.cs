@@ -32,9 +32,6 @@ namespace DBDMN
 
         public static void playSound( Sound.SoundsEnum sound, bool bLooped = false )
         {
-            // All sound muted? - don't play
-            if ( Form1.getInstance().isSoundMuted() )
-                return;
 
             switch ( sound )
             {

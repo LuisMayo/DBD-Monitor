@@ -30,10 +30,6 @@ namespace DBDMN
         /// </summary>
         private Dictionary<string, object> settings = new Dictionary<string, object>();
 
-        /// <summary>
-        /// Sound for an action
-        /// </summary>
-        private Sound.SoundsEnum actionSoundFile = Sound.SoundsEnum.None;
 
         /// <summary>
         /// Action name (description)

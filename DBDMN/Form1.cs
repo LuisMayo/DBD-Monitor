@@ -114,30 +114,9 @@ namespace DBDMN
 
         }
 
-        private void initActions()
-        {
-            foreach(var a in Actions.getActions() )
-            {
-                lstEvents.Items.Add( a.Value );
-            }
-
-            // Fill sounds
-            foreach(var kvp in Sound.soundsToString )
-            {
-                cmbSound.Items.Add( kvp.Value );
-            }
-        }
-
         private void setGuiStateFromConfigSettings()
         {
-            chkMute.Checked = Config.getConfigValueAsBool( Config.keyGeneralMuteAllSounds, false );
-            chkPreview.Checked = Config.getConfigValueAsBool( Config.keyGeneralGamePreviewOn, false );
-            chkStatsEnabled.Checked = Config.getConfigValueAsBool( Config.keyGeneralNewGameResultsEnabled, true );
             chkOnTop.Checked = Config.getConfigValueAsBool( Config.keyGeneralAlwaysOnTopOn, false );
-            chkPlaySoundOnStatsSave.Checked = Config.getConfigValueAsBool( Config.keyGeneralSoundOnNewStats, true );
-
-            chkActionsEnabled.Checked = Config.getConfigValueAsBool( Config.keyGeneralActionsEnabled, true );
-            onActionsEnabled( chkActionsEnabled.Checked );
 
             toolTip.InitialDelay = 100;
             toolTip.SetToolTip( lblStatsSwfEscapeRateValue, toolTip.GetToolTip( lblStatsSwfEscapeRate ) );
@@ -163,8 +142,6 @@ namespace DBDMN
 
             // Load stats
             StatSaver.load();
-
-            initActions();
 
             // Load only after creating actions
             Config.load();
@@ -197,42 +174,6 @@ namespace DBDMN
         private void button1_Click(object sender, EventArgs e)
         {
             
-        }
-
-        
-
-        
-
-        
-
-        private void managePreviewWindow()
-        {
-            bool bHaveContentToDisplay = ScreenCapture.haveGameHwnd() || ScreenCapture.haveDebugPicture();
-
-            // No game? - hide
-            if (!bHaveContentToDisplay && wndPreview.Visible)
-            {
-                wndPreview.Hide();
-                return;
-            }
-
-            if (chkPreview.Checked)
-            {
-                if ( bHaveContentToDisplay && !isDBDWindowFocused())
-                {
-                    if (!wndPreview.Visible)
-                        wndPreview.Show();
-                }
-                else
-                {
-                    if (wndPreview.Visible)
-                        wndPreview.Hide();
-                }
-            }
-            else if (wndPreview.Visible)
-            {
-                wndPreview.Hide();
-            }
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -340,8 +281,6 @@ namespace DBDMN
             //    //}
 
             //}
-
-            managePreviewWindow();
 
             if ( !bSuccess || (!ScreenCapture.haveGameHwnd() && !ScreenCapture.haveDebugPicture()))
                 return;
@@ -474,17 +413,6 @@ namespace DBDMN
             DBDT.Visible = false;
         }
 
-        public void untickPreview()
-        {
-            if(chkPreview.Checked)
-                chkPreview.Checked = false;
-        }
-
-        private void chkPreview_CheckedChanged(object sender, EventArgs e)
-        {
-            Config.setConfigValue( Config.keyGeneralGamePreviewOn, chkPreview.Checked );
-        }
-
         private void Form1_FormClosing( object sender, FormClosingEventArgs e )
         {
             // Save stats
@@ -492,171 +420,9 @@ namespace DBDMN
             Config.save();
         }
 
-        private void btnStats_Click( object sender, EventArgs e )
-        {
-        }
-
-        private Action getSelectedAction()
-        {
-            if ( lstEvents.SelectedIndex < 0 )
-                return null;
-
-            return ( Action )lstEvents.Items[ lstEvents.SelectedIndex ];
-        }
-
-        private void checkBox3_CheckedChanged( object sender, EventArgs e )
-        {
-            var selectedAction = getSelectedAction();
-            if ( selectedAction == null )
-                return;
-
-            selectedAction.setBringGameToFront( chkBringToFront.Checked );
-        }
-
-        private void checkBox2_CheckedChanged( object sender, EventArgs e )
-        {
-        }
-
-        private void checkBox6_CheckedChanged( object sender, EventArgs e )
-        {
-        }
-
-        private void chkPlaySound_CheckedChanged( object sender, EventArgs e )
-        {
-            chkLooped.Enabled = chkPlaySound.Checked;
-
-            var selectedAction = getSelectedAction();
-            if ( selectedAction == null )
-                return;
-
-            selectedAction.setMustPlaySound( chkPlaySound.Checked );
-            //selectedAction.setPlaySoundLooped( chkPlaySound.Checked, chkLooped.Checked );
-        }
-
-        private void chkSound_CheckedChanged( object sender, EventArgs e )
-        {
-            //Actions.actions[StateManager.State.Lobby_AllPlayersReady].setPlaySound( chkOnAllReadyPlaySound.Checked, checkBox1.Checked );
-        }
-
-        private void button2_Click( object sender, EventArgs e )
-        {
-            previewSound( cmbSound.Text, chkLooped.Checked );
-        }
-
-        private void comboBox1_SelectedIndexChanged( object sender, EventArgs e )
-        {
-            var selectedAction = getSelectedAction();
-            if ( selectedAction == null )
-                return;
-
-            //chkPlaySound.Checked = true;
-
-            var sound = Sound.getSoundFromSoundName( cmbSound.Text );
-
-            selectedAction.setSoundName( sound );
-        }
-
-        private void checkBox7_CheckedChanged( object sender, EventArgs e )
-        {
-            var selectedAction = getSelectedAction();
-            if ( selectedAction == null )
-                return;
-
-            //chkPlaySound.Checked = true;
-
-            selectedAction.setPlaySoundLooped( chkLooped.Checked );
-        }
-
-        private void checkBox1_CheckedChanged( object sender, EventArgs e )
-        {
-            //chkOnAllReadyPlaySound.Checked = true;
-
-            //Actions.actions[ StateManager.State.Lobby_AllPlayersReady ].setPlaySound( chkOnAllReadyPlaySound.Checked, checkBox1.Checked );
-        }
-
-        private void button3_Click( object sender, EventArgs e )
-        {
-        }
-
-        private void chkMute_CheckedChanged( object sender, EventArgs e )
-        {
-            Config.setConfigValue( Config.keyGeneralMuteAllSounds, chkMute.Checked );
-
-            if ( chkMute.Checked )
-            {
-                Actions.stopSound();
-            }
-        }
-
-        public bool isSoundMuted()
-        {
-            return chkMute.Checked;
-        }
-
-        private void checkBox5_CheckedChanged( object sender, EventArgs e )
-        {
-            //Actions.actions[ StateManager.State.LoadingMatch_AlmostDone ].setPlaySound( checkBox5.Checked, checkBox2.Checked );
-        }
-
-        private void cmbOnStartingGameSound_SelectedIndexChanged( object sender, EventArgs e )
-        {
-        }
-
-        private void enableActionsGUI()
-        {
-            chkBringToFront.Enabled = true;
-            chkPlaySound.Enabled = true;
-            cmbSound.Enabled = true;
-            btnPlay.Enabled = true;
-            chkLooped.Enabled = true;
-        }
-
-        private void lstEvents_SelectedIndexChanged( object sender, EventArgs e )
-        {
-            var selectedAction = getSelectedAction();
-            if ( selectedAction == null )
-                return;
-
-            enableActionsGUI();
-
-            chkBringToFront.Checked = selectedAction.getBringGameToFront();
-
-            // Set selected sound
-            var soundFile = selectedAction.getSoundName();
-            if ( soundFile == SoundsEnum.None )
-            {
-                cmbSound.Text = "";     // No sound selected
-            }
-            else
-            {
-                cmbSound.Text = Sound.getSoundNameFromSound( soundFile );
-            }
-
-            chkPlaySound.Checked = selectedAction.getMustPlaySound();
-            chkLooped.Checked = selectedAction.getMustPlayLooped();
-        }
-
-        private void chkActionsEnabled_CheckedChanged( object sender, EventArgs e )
-        {
-            Config.setConfigValue( Config.keyGeneralActionsEnabled, chkActionsEnabled.Checked );
-
-            onActionsEnabled( chkActionsEnabled.Checked );
-        }
-
         private void onActionsEnabled(bool b)
         {
-            grpActions.Enabled = b;
             Actions.Enabled = b;
-        }
-
-        private void grpStats_Enter( object sender, EventArgs e )
-        {
-
-        }
-
-        private void btnRefreshStats_Click( object sender, EventArgs e )
-        {
-            
         }
 
         public void recalcStats()
@@ -760,7 +526,7 @@ namespace DBDMN
 
         public bool isAddNewGameResultsEnabled()
         {
-            return chkStatsEnabled.Checked;
+            return true;
         }
 
         private void chkOnTop_CheckedChanged( object sender, EventArgs e )
@@ -768,21 +534,6 @@ namespace DBDMN
             this.TopMost = chkOnTop.Checked;
 
             Config.setConfigValue( Config.keyGeneralAlwaysOnTopOn, chkOnTop.Checked );
-
-        }
-
-        private void chkStatsEnabled_CheckedChanged( object sender, EventArgs e )
-        {
-            Config.setConfigValue( Config.keyGeneralNewGameResultsEnabled, chkStatsEnabled.Checked );
-        }
-
-        private void chkPlaySoundOnStatsSave_CheckedChanged( object sender, EventArgs e )
-        {
-            Config.setConfigValue( Config.keyGeneralSoundOnNewStats, chkPlaySoundOnStatsSave.Checked );
-        }
-
-        private void grpActions_Enter(object sender, EventArgs e)
-        {
 
         }
 
@@ -796,6 +547,11 @@ namespace DBDMN
         {
             StateManager.setGameType(Stats.GameType.Solo);
             this.timer1_Tick(null, null);
+        }
+
+        private void tabPage1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

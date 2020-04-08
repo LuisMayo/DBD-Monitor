@@ -46,7 +46,6 @@ namespace DBDMN
         private void Preview_FormClosing(object sender, FormClosingEventArgs e)
         {
             // Prevent this form from poping up again on its own
-            Preview.mainForm.untickPreview();
 
             this.Hide();
             e.Cancel = true;
@@ -96,7 +95,6 @@ namespace DBDMN
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
         {
             this.Hide();
-            Preview.mainForm.untickPreview();
         }
 
         private Point MouseDownLocation;
