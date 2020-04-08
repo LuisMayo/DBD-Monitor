@@ -692,7 +692,7 @@
             // DBDT
             // 
             this.DBDT.Icon = ((System.Drawing.Icon)(resources.GetObject("DBDT.Icon")));
-            this.DBDT.Text = "DBD Monitor";
+            this.DBDT.Text = "DBD Manual Monitor";
             this.DBDT.MouseClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon_MouseClick);
             // 
             // chkPreview
@@ -764,7 +764,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "Form1";
-            this.Text = "DBD Monitor";
+            this.Text = "DBD Manual Monitor";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Resize += new System.EventHandler(this.Form1_Resize);

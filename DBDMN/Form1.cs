@@ -21,7 +21,7 @@ namespace DBDMN
 {
     public partial class Form1 : Form
     {
-        public const string title = "DBD Monitor";
+        public const string title = "DBD Manual Monitor";
 
         private static Form1 me = null;
 
