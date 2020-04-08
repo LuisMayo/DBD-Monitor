@@ -1,6 +1,9 @@
 # DBD-Monitor
 
-DBD Monitor stores and shows your personal Dead by Daylight stats and notifies when a game lobby is found.
+~~DBD Monitor stores and shows your personal Dead by Daylight stats and notifies when a game lobby is found.~~
+This is a personal fork of https://github.com/Troman-cs/DBD-Monitor which removes almost all funcionalities, including all automatic funtions. Instead you have to click a button when you want to register the stats, being able to choose between solo and swf. Stats will be saved then.
+
+![Interface screenshot](https://i.imgur.com/Ab92331.png)
 
 # Youtube Tutorial:
 https://youtu.be/5OzM5NsqKjI
