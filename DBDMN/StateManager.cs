@@ -183,7 +183,7 @@ namespace DBDMN
             resetStateThatWasRecognizedDuringCurrentUpdate();
         }
 
-        private static void resetStateThatWasRecognizedDuringCurrentUpdate() => stateSetDuringCurrentUpdate = State.None;
+        public static void resetStateThatWasRecognizedDuringCurrentUpdate() => stateSetDuringCurrentUpdate = State.None;
            
         public static State getState() => state;
 
@@ -373,19 +373,13 @@ namespace DBDMN
             var oldState = setState( newState );
 
             // We have just entered Endgame screen, any of its pages or observing
-            if ( !isAnyEndgameState( oldState ) && isAnyEndgameState( newState ) )
-            {
-                // We just entered the endgame screen. Re-init some variables related to this state,
-                // otherwise their old states can carry over from a previous game
-                initEndgamePlayerResultInfo();
 
-                Actions.onEndgameScreen();
-            }
+            // We just entered the endgame screen. Re-init some variables related to this state,
+            // otherwise their old states can carry over from a previous game
+            initEndgamePlayerResultInfo();
 
-            // Entered Scoreboard for the first time
-            if ( oldState != newState )
-                Actions.onEndgame_Scoreboard();
-
+            Actions.onEndgameScreen();
+            
             // Update players game result info, if still need to
             if ( mustStillUpdateScoreboardDetails() )
             {
